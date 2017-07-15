@@ -252,6 +252,10 @@ SummaryList_2_Frame <- function(SummaryList, Type=c('OCF','TFS')) {
 		SummaryFrame$Rank = 1:nrow(SummaryFrame)
 		#Set the order of the columns to most logical order
 		SummaryFrame = SummaryFrame[,c(9,1,4,2,5,3,6:8)]
+		
+		#Turn all irrelevant scores etc to 0
+		SummaryFrame[SummaryFrame$MakeSemis == 0, 4:9] = 0
+		SummaryFrame[SummaryFrame$MakeFinals == 0, 6:9] = 0
 	} else if (Type == 'OCF') {
 		SummaryFrame = suppressWarnings( data.frame(Reduce(rbind, SummaryList), stringsAsFactors=F) )
 		names(SummaryFrame) = c('MeanTuesday','PercBronze','PercSilver','PercGold')
