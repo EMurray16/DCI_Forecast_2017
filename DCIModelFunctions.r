@@ -134,9 +134,9 @@ Predictor <- function(CoefsList, PredictDays) {
 		
 		#make the big ole matrix of random numbers
 		if (CaptionName == 'GE') {
-			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=TRUE) * 0.09
+			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=FALSE) * 0.09
 		} else { 
-			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=TRUE) * 0.05 
+			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=FALSE) * 0.05 
 		}
 		
 		#Make a function that predicts the scores
