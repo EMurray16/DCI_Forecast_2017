@@ -16,7 +16,7 @@ for (i in 1:length(ScoreFrameList)) {
 
 #Make a list of the World Class corps and open class corps
 WorldCorps = as.list(WC_GE$Corps)
-OpenCorps = OC_GE$Corps
+OpenCorps = as.list(OC_GE$Corps)
 
 #Now run the reducer function on each corps
 WorldReduce = lapply(WorldCorps, CorpsReduce, GEFrame=WC_GE, VisFrame=WC_Vis, MusFrame=WC_Mus)
@@ -41,16 +41,16 @@ AllNames = names(AllCoefsClean)
 #		I didn't do this here because of uncertainty as to whether parallel computing is feasible 
 #		on all machines this code will run on. 
 
-#Now predict the WC finals week shows
-tic(); AllRuns = replicate(100, Predictor(AllCoefsClean, 50:52), simplify=F); toc()
-AllRanks = lapply(AllRuns, Scores2Ranks)
-tic(); AllSumList = lapply(AllNames, TFS_CorpsSummary, ScoresList=AllRuns, RanksList=AllRanks); toc()
-names(AllSumList) = AllNames
-TFS_Frame = SummaryList_2_Frame(AllSumList, Type='TFS')
+# #Now predict the WC finals week shows
+# tic(); AllRuns = replicate(10000, Predictor(AllCoefsClean, 50:52), simplify=F); toc()
+# AllRanks = lapply(AllRuns, Scores2Ranks)
+# tic(); AllSumList = lapply(AllNames, TFS_CorpsSummary, ScoresList=AllRuns, RanksList=AllRanks); toc()
+# names(AllSumList) = AllNames
+# TFS_Frame = SummaryList_2_Frame(AllSumList, Type='TFS')
 
-# #Predict Open Class finals
-# tic(); OCFRuns = replicate(1000, Predictor(OpenCoefsClean, 48), simplify=F); toc()
-# OCFRanks = lapply(OCFRuns, Scores2Ranks)
-# tic(); OCFSumList = lapply(OpenNames, OCF_CorpsSummary, ScoresList=OCFRuns, RanksList=OCFRanks); toc()
-# names(OCFSumList) = OpenNames
-# OCF_Frame = SummaryList_2_Frame(OCFSumList, Type='OCF')
+#Predict Open Class finals
+tic(); OCFRuns = replicate(1000, Predictor(OpenCoefsClean, 48), simplify=F); toc()
+OCFRanks = lapply(OCFRuns, Scores2Ranks)
+tic(); OCFSumList = lapply(OpenNames, OCF_CorpsSummary, ScoresList=OCFRuns, RanksList=OCFRanks); toc()
+names(OCFSumList) = OpenNames
+OCF_Frame = SummaryList_2_Frame(OCFSumList, Type='OCF')

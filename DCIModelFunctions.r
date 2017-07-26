@@ -134,9 +134,9 @@ Predictor <- function(CoefsList, PredictDays) {
 		
 		#make the big ole matrix of random numbers
 		if (CaptionName == 'GE') {
-			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=FALSE) * 0.09
+			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=F) * 0.09
 		} else { 
-			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=FALSE) * 0.05 
+			RandMat = mvrnorm(30, mu=rep(0,NCorps), Sigma=CorrMatrix, empirical=F) * 0.05 
 		}
 		
 		#Make a function that predicts the scores
@@ -243,8 +243,8 @@ OCF_CorpsSummary <- function(CorpsName, ScoresList, RanksList) {
 SummaryList_2_Frame <- function(SummaryList, Type=c('OCF','TFS')) {
 	if (Type == 'TFS') {
 		SummaryFrame = suppressWarnings( data.frame(Reduce(rbind, SummaryList), stringsAsFactors=F) )
-		names(SummaryFrame) = c('MeanPrelims','MeanSemis','MeanFinals','PercSemis','PercFinals',
-			'PercBronze','PercSilver','PercGold')
+		names(SummaryFrame) = c('MeanPrelims','MeanSemis','MeanFinals','%Semis','%Finals',
+			'%Bronze','%Silver','%Gold')
 		row.names(SummaryFrame) = names(SummaryList)
 		#order the data frame by mean finals score
 		SummaryFrame = SummaryFrame[order(SummaryFrame$MeanFinals, decreasing=T) ,]
@@ -254,14 +254,14 @@ SummaryList_2_Frame <- function(SummaryList, Type=c('OCF','TFS')) {
 		SummaryFrame = SummaryFrame[,c(9,1,4,2,5,3,6:8)]
 		
 		#Turn all irrelevant scores etc to 0
-		SummaryFrame[SummaryFrame$MakeSemis == 0, 4:9] = 0
-		SummaryFrame[SummaryFrame$MakeFinals == 0, 6:9] = 0
+		SummaryFrame[SummaryFrame$PercSemis == 0, 4:9] = 0
+		SummaryFrame[SummaryFrame$PercFinals == 0, 6:9] = 0
 	} else if (Type == 'OCF') {
 		SummaryFrame = suppressWarnings( data.frame(Reduce(rbind, SummaryList), stringsAsFactors=F) )
-		names(SummaryFrame) = c('MeanTuesday','PercBronze','PercSilver','PercGold')
+		names(SummaryFrame) = c('MeanFinals','%Bronze','%Silver','%Gold')
 		row.names(SummaryFrame) = names(SummaryList)
 		#order the data frame by mean finals score
-		SummaryFrame = SummaryFrame[order(SummaryFrame$MeanTuesday, decreasing=T) ,]
+		SummaryFrame = SummaryFrame[order(SummaryFrame$MeanFinals, decreasing=T) ,]
 		#add a ranking for easy viewing
 		SummaryFrame$Rank = 1:nrow(SummaryFrame)
 		SummaryFrame = SummaryFrame[,c(5,1:4)]
