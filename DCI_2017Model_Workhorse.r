@@ -41,12 +41,12 @@ AllNames = names(AllCoefsClean)
 #		I didn't do this here because of uncertainty as to whether parallel computing is feasible 
 #		on all machines this code will run on. 
 
-# #Now predict the WC finals week shows
-# tic(); AllRuns = replicate(10000, Predictor(AllCoefsClean, 50:52), simplify=F); toc()
-# AllRanks = lapply(AllRuns, Scores2Ranks)
-# tic(); AllSumList = lapply(AllNames, TFS_CorpsSummary, ScoresList=AllRuns, RanksList=AllRanks); toc()
-# names(AllSumList) = AllNames
-# TFS_Frame = SummaryList_2_Frame(AllSumList, Type='TFS')
+#Now predict the WC finals week shows
+tic(); AllRuns = replicate(10000, Predictor(AllCoefsClean, 50:52), simplify=F); toc()
+AllRanks = lapply(AllRuns, Scores2Ranks)
+tic(); AllSumList = lapply(AllNames, TFS_CorpsSummary, ScoresList=AllRuns, RanksList=AllRanks); toc()
+names(AllSumList) = AllNames
+TFS_Frame = SummaryList_2_Frame(AllSumList, Type='TFS')
 
 #Predict Open Class finals
 tic(); OCFRuns = replicate(1000, Predictor(OpenCoefsClean, 48), simplify=F); toc()
